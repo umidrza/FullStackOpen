@@ -16,13 +16,20 @@ const Button = ({content, onClick}) => {
 }
 
 const Statistics = ({counts}) => {
+    const {good, neutral, bad} = counts;
+    const sum = good + neutral + bad;
+    const average = sum === 0 ? 0 : (good - bad) / sum;
+    const positive = sum === 0 ? 0 : good * 100 / sum;
 
     return (
         <div>
             <h2>Statistics</h2>
-            <p>Good {counts.good}</p>
-            <p>Neutral {counts.neutral}</p>
-            <p>Bad {counts.bad}</p>
+            <p>Good {good}</p>
+            <p>Neutral {neutral}</p>
+            <p>Bad {bad}</p>
+            <p>All {sum}</p>
+            <p>Average {average}</p>
+            <p>Positive {positive} %</p>
         </div>
     )
 }
