@@ -34,18 +34,27 @@ const Statistics = ({counts}) => {
     return (
         <div>
             <h2>Statistics</h2>
-            <StatisticLine text={"Good"} value={good}/>
-            <StatisticLine text={"Neutral"} value={neutral}/>
-            <StatisticLine text={"Bad"} value={bad}/>
-            <StatisticLine text={"All"} value={sum}/>
-            <StatisticLine text={"Average"} value={average}/>
-            <StatisticLine text={"Positive"} value={positive} symbol={"%"}/>
+            <table>
+                <tbody>
+                    <StatisticLine text={"Good"} value={good}/>
+                    <StatisticLine text={"Neutral"} value={neutral}/>
+                    <StatisticLine text={"Bad"} value={bad}/>
+                    <StatisticLine text={"All"} value={sum}/>
+                    <StatisticLine text={"Average"} value={average}/>
+                    <StatisticLine text={"Positive"} value={positive} symbol={"%"}/>
+                </tbody>
+            </table>
         </div>
     )
 }
 
 const StatisticLine = ({text, value, symbol}) => {
-    return <p>{text} {value} {symbol}</p>
+    return (
+        <tr>
+            <td>{text}</td>
+            <td>{value} {symbol && ` ${symbol}`}</td>
+        </tr>
+    )
 }
 
 
