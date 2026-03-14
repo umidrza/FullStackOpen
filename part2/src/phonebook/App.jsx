@@ -1,20 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import PersonForm from './PersonForm';
 import Persons from './Persons';
 import Filter from './Filter';
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Ada Lovelace', number: '39-44-5323523' },
-        { name: 'Dan Abramov', number: '12-43-234345' },
-        { name: 'Mary Poppendieck', number: '39-23-6423122' }
-    ])
-
-    const [shownPersons, setShownPersons] = useState([...persons]);
-
+    const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
+    const [filterValue, setFilterValue] = useState('');
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                setPersons(response.data);
+            })
+    }, []);
 
     function handleNewName(e) {
         setNewName(e.target.value);
@@ -34,24 +36,23 @@ const App = () => {
 
         const newPersons = [...persons, { name: newName, number: newNumber }];
         setPersons(newPersons);
-        setShownPersons(newPersons);
         setNewName('');
         setNewNumber('');
     }
 
     function handlefilterChange(e) {
-        const value = e.target.value;
+        setFilterValue(e.target.value);
+    }
 
-        const filteredPersons = persons.filter(p => p.name.toLowerCase().includes(value) || p.number.includes(value));
-        setShownPersons(filteredPersons);
+    function filterPersons(){
+        return persons.filter(p => p.name.toLowerCase().includes(filterValue) || p.number.includes(filterValue));
     }
 
     return (
         <div>
             <h2>Phonebook</h2>
 
-            <Filter handlefilterChange={handlefilterChange} />
-
+            <Filter filterValue={filterValue} handlefilterChange={handlefilterChange} />
 
             <PersonForm addNewPerson={addNewPerson}
                 newName={newName}
@@ -62,7 +63,7 @@ const App = () => {
 
             <h2>Numbers</h2>
 
-            <Persons persons={shownPersons}/>
+            <Persons persons={filterPersons()}/>
         </div>
     )
 }
