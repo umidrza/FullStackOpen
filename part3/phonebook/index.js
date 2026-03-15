@@ -36,10 +36,6 @@ let persons = [
     }
 ]
 
-// app.get('/:path(*)', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-// });
-
 app.get('/info', (request, response) => {
     response.send(
         `<p>Phonebook has info for ${persons.length} people</p>
