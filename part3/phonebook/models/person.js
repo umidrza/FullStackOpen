@@ -15,7 +15,8 @@ mongoose.connect(url, { family: 4 })
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     number: {
         type: String,
