@@ -1,17 +1,5 @@
 const mongoose = require('mongoose')
 
-mongoose.set('strictQuery', false)
-
-const url = process.env.MONGODB_URI
-
-mongoose.connect(url, { family: 4 })
-    .then(() => {
-        console.log('connected to MongoDB')
-    })
-    .catch(error => {
-        console.log('error connecting to MongoDB:', error.message)
-    })
-
 const phoneValidator = (phone) => {
     const parts = phone.split('-')
 
@@ -34,7 +22,6 @@ const personSchema = new mongoose.Schema({
     },
     number: {
         type: String,
-
         required: true,
         validate: {
             validator: phoneValidator,

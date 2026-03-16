@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import phonebookService from '../services/phonebook';
 import PersonForm from './PersonForm';
-import Persons from './Persons';
+import People from './People';
 import Filter from './Filter';
 import Notification from './Notification';
 
 const App = () => {
-    const [persons, setPersons] = useState([]);
+    const [people, setPeople] = useState([]);
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filterValue, setFilterValue] = useState('');
@@ -14,13 +14,13 @@ const App = () => {
 
     useEffect(() => {
         phonebookService.getAll().then((data) => {
-            setPersons(data);
+            setPeople(data);
         })
     }, []);
 
-    function filterPersons() {
+    function filterPeople() {
         const filter = filterValue.toLowerCase();
-        return persons.filter(p => p.name.toLowerCase().includes(filter) || p.number.includes(filter));
+        return people.filter(p => p.name.toLowerCase().includes(filter) || p.number.includes(filter));
     }
 
     const clearForm = () => {
@@ -31,7 +31,7 @@ const App = () => {
 
     function addNewPerson(e) {
         e.preventDefault();
-        const existingPerson = persons.find((p) => p.name === newName)
+        const existingPerson = people.find((p) => p.name === newName)
 
         if (existingPerson) {
             const res = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
@@ -50,7 +50,7 @@ const App = () => {
 
         phonebookService.create(newPerson)
             .then((data) => {
-                setPersons([...persons, data]);
+                setPeople([...people, data]);
                 notifyWith(`Added ${data.name}`);
                 clearForm();
             })
@@ -68,8 +68,8 @@ const App = () => {
 
         phonebookService.update(id, updatedPerson)
             .then((data) => {
-                const updatedPersons = persons.map(p => p.id === id ? data : p);
-                setPersons(updatedPersons);
+                const updatedPeople = people.map(p => p.id === id ? data : p);
+                setPeople(updatedPeople);
                 notifyWith(`Phonenumber of ${data.name} updated!`)
                 clearForm();
             })
@@ -79,14 +79,14 @@ const App = () => {
     }
 
     function deletePerson(id) {
-        const person = persons.find(p => p.id === id);
+        const person = people.find(p => p.id === id);
         const res = confirm(`Delete ${person.name} ?`);
         if (!res) return;
 
         phonebookService.remove(id)
             .then(() => {
-                const updatedPersons = persons.filter(p => p.id !== id);
-                setPersons(updatedPersons);
+                const updatedPeople = people.filter(p => p.id !== id);
+                setPeople(updatedPeople);
                 notifyWith(`Deleted ${person.name}`);
             })
             .catch(error => {
@@ -117,7 +117,7 @@ const App = () => {
 
             <h2>Numbers</h2>
 
-            <Persons persons={filterPersons()} deletePerson={deletePerson} />
+            <People people={filterPeople()} deletePerson={deletePerson} />
         </div>
     )
 }

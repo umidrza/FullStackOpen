@@ -1,14 +1,14 @@
 import Person from './Person';
 
-const Persons = ({persons, deletePerson}) => {
+const People = ({people, deletePerson}) => {
 
     return (
         <div>
-            {persons.map((person) =>
+            {people.map((person) =>
                 <Person key={person.id} person={person} deletePerson={deletePerson}/>
             )}
         </div>
     )
 }
 
-export default Persons
+export default People
