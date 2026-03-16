@@ -10,7 +10,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../../part2 && npm run build && @powershell Copy-Item dist -Recurse ../part3/phonebook",
+    "build:ui": "rimraf dist && cd ../../part2 && npm run build && cp -r dist ../part3/phonebook",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "dependencies": {
@@ -18,5 +18,8 @@
     "express": "^5.2.1",
     "mongoose": "^9.3.0",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "rimraf": "^6.1.3"
   }
 }

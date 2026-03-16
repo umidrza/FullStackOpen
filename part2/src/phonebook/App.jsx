@@ -54,6 +54,9 @@ const App = () => {
                 notifyWith(`Added ${data.name}`);
                 clearForm();
             })
+            .catch(error => {
+                notifyWith(error.response.data.error, true)
+            })
     }
 
     function updatePerson(id) {
@@ -70,12 +73,8 @@ const App = () => {
                 notifyWith(`Phonenumber of ${data.name} updated!`)
                 clearForm();
             })
-            .catch(() => {
-                notifyWith(
-                    `Information of ${updatedPerson.name} has already been removed from server`,
-                    true
-                )
-                setPersons(persons.filter((p) => p.name !== updatedPerson.name))
+            .catch(error => {
+                notifyWith(error.response.data.error, true)
             })
     }
 
@@ -88,9 +87,11 @@ const App = () => {
             .then(() => {
                 const updatedPersons = persons.filter(p => p.id !== id);
                 setPersons(updatedPersons);
+                notifyWith(`Deleted ${person.name}`);
+            })
+            .catch(error => {
+                notifyWith(error.response.data.error, true)
             });
-
-        notifyWith(`Deleted ${person.name}`);
     }
 
     const notifyWith = (message, isError = false) => {
